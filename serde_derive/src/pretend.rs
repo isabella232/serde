@@ -54,7 +54,7 @@ fn pretend_fields_used(cont: &Container) -> Tokens {
     let (_, ty_generics, _) = cont.generics.split_for_impl();
 
     let patterns = match cont.data {
-        Data::Enum(ref variants) => variants
+        Data::Enum(_, ref variants) => variants
             .iter()
             .filter_map(|variant| match variant.style {
                 Style::Struct => {
@@ -95,7 +95,7 @@ fn pretend_fields_used(cont: &Container) -> Tokens {
 //
 fn pretend_variants_used(cont: &Container) -> Tokens {
     let variants = match cont.data {
-        Data::Enum(ref variants) => variants,
+        Data::Enum(_, ref variants) => variants,
         Data::Struct(_, _) => {
             return quote!();
         }
