@@ -159,7 +159,7 @@ fn serialize_body(cont: &Container, params: &Parameters) -> Fragment {
         serialize_into(params, type_into)
     } else {
         match cont.data {
-            Data::Enum(ref variants) => serialize_enum(params, variants, &cont.attrs),
+            Data::Enum(_, ref variants) => serialize_enum(params, variants, &cont.attrs),
             Data::Struct(Style::Struct, ref fields) => {
                 if fields.iter().any(|field| field.ident.is_none()) {
                     panic!("struct has unnamed fields");
