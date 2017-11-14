@@ -53,7 +53,7 @@ fn pretend_fields_used(cont: &Container) -> TokenStream {
     let (_, ty_generics, _) = cont.generics.split_for_impl();
 
     let patterns = match cont.data {
-        Data::Enum(ref variants) => variants
+        Data::Enum(_, ref variants) => variants
             .iter()
             .filter_map(|variant| match variant.style {
                 Style::Struct => {
@@ -93,7 +93,7 @@ fn pretend_fields_used(cont: &Container) -> TokenStream {
 //
 fn pretend_variants_used(cont: &Container) -> TokenStream {
     let variants = match cont.data {
-        Data::Enum(ref variants) => variants,
+        Data::Enum(_, ref variants) => variants,
         Data::Struct(_, _) => {
             return quote!();
         }

@@ -27,7 +27,7 @@ pub fn check(cx: &Ctxt, cont: &mut Container, derive: Derive) {
 /// attribute.
 fn check_getter(cx: &Ctxt, cont: &Container) {
     match cont.data {
-        Data::Enum(_) => {
+        Data::Enum(_, _) => {
             if cont.data.has_getter() {
                 cx.error("#[serde(getter = \"...\")] is not allowed in an enum");
             }
@@ -46,7 +46,7 @@ fn check_getter(cx: &Ctxt, cont: &Container) {
 /// Flattening has some restrictions we can test.
 fn check_flatten(cx: &Ctxt, cont: &Container) {
     match cont.data {
-        Data::Enum(ref variants) => {
+        Data::Enum(_, ref variants) => {
             for variant in variants {
                 for field in &variant.fields {
                     check_flatten_field(cx, variant.style, field);
@@ -100,7 +100,7 @@ fn check_flatten_field(cx: &Ctxt, style: Style, field: &Field) {
 /// last variant may be a newtype variant which is an implicit "other" case.
 fn check_identifier(cx: &Ctxt, cont: &Container) {
     let variants = match cont.data {
-        Data::Enum(ref variants) => variants,
+        Data::Enum(_, ref variants) => variants,
         Data::Struct(_, _) => {
             return;
         }
@@ -163,7 +163,7 @@ fn check_identifier(cx: &Ctxt, cont: &Container) {
 /// (de)serialize_with.
 fn check_variant_skip_attrs(cx: &Ctxt, cont: &Container) {
     let variants = match cont.data {
-        Data::Enum(ref variants) => variants,
+        Data::Enum(_, ref variants) => variants,
         Data::Struct(_, _) => {
             return;
         }
@@ -230,7 +230,7 @@ fn check_variant_skip_attrs(cx: &Ctxt, cont: &Container) {
 /// the to-be-deserialized input.
 fn check_internal_tag_field_name_conflict(cx: &Ctxt, cont: &Container) {
     let variants = match cont.data {
-        Data::Enum(ref variants) => variants,
+        Data::Enum(_, ref variants) => variants,
         Data::Struct(_, _) => return,
     };
 
@@ -300,7 +300,7 @@ fn check_transparent(cx: &Ctxt, cont: &mut Container, derive: Derive) {
     }
 
     let fields = match cont.data {
-        Data::Enum(_) => {
+        Data::Enum(_, _) => {
             cx.error("#[serde(transparent)] is not allowed on an enum");
             return;
         }
