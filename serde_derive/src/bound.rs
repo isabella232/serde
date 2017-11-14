@@ -140,7 +140,7 @@ where
         relevant_ty_params: HashSet::new(),
     };
     match cont.data {
-        Data::Enum(ref variants) => for variant in variants.iter() {
+        Data::Enum(_, ref variants) => for variant in variants.iter() {
             let relevant_fields = variant
                 .fields
                 .iter()

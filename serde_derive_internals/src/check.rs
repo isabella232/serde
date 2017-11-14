@@ -25,7 +25,7 @@ pub fn check(cx: &Ctxt, cont: &Container) {
 /// attribute.
 fn check_getter(cx: &Ctxt, cont: &Container) {
     match cont.data {
-        Data::Enum(_) => {
+        Data::Enum(_, _) => {
             if cont.data.has_getter() {
                 cx.error("#[serde(getter = \"...\")] is not allowed in an enum");
             }
@@ -44,7 +44,7 @@ fn check_getter(cx: &Ctxt, cont: &Container) {
 /// Flattening has some restrictions we can test.
 fn check_flatten(cx: &Ctxt, cont: &Container) {
     match cont.data {
-        Data::Enum(_) => {
+        Data::Enum(_, _) => {
             if cont.attrs.has_flatten() {
                 cx.error("#[serde(flatten)] cannot be used within enums");
             }
@@ -92,7 +92,7 @@ fn check_flatten(cx: &Ctxt, cont: &Container) {
 /// last variant may be a newtype variant which is an implicit "other" case.
 fn check_identifier(cx: &Ctxt, cont: &Container) {
     let variants = match cont.data {
-        Data::Enum(ref variants) => variants,
+        Data::Enum(_, ref variants) => variants,
         Data::Struct(_, _) => {
             return;
         }
@@ -149,7 +149,7 @@ fn check_identifier(cx: &Ctxt, cont: &Container) {
 /// (de)serialize_with.
 fn check_variant_skip_attrs(cx: &Ctxt, cont: &Container) {
     let variants = match cont.data {
-        Data::Enum(ref variants) => variants,
+        Data::Enum(_, ref variants) => variants,
         Data::Struct(_, _) => {
             return;
         }
@@ -225,7 +225,7 @@ fn check_internal_tag_field_name_conflict(
     cont: &Container,
 ) {
     let variants = match cont.data {
-        Data::Enum(ref variants) => variants,
+        Data::Enum(_, ref variants) => variants,
         Data::Struct(_, _) => return,
     };
 
